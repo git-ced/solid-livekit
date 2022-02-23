@@ -1,0 +1,63 @@
+{
+  "name": "solid-livekit",
+  "version": "0.6.4",
+  "description": "Livekit SDK & Components for Solid",
+  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/production/production/index.jsx",
+  "module": "dist/esm/production/production/index.jsx",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/git-ced/solid-livekit.git",
+    "type": "git"
+  },
+  "homepage": "example.livekit.io",
+  "bugs": {
+    "url": "https://github.com/git-ced/solid-livekit/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Prince Neil Cedrick Castro",
+  "private": false,
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
+  },
+  "keywords": [
+    "solidjs",
+    "livekit",
+    "video",
+    "audio"
+  ],
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.9.1",
+    "eslint": "^7.32.0",
+    "eslint-config-lxsmnsyc": "^0.2.3",
+    "identity-obj-proxy": "^3.0.0",
+    "pridepack": "^0.12.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "prepublish": "pridepack clean && pridepack build",
+    "build": "pridepack build",
+    "type-check": "pridepack check",
+    "lint": "pridepack lint",
+    "test": "pridepack test --passWithNoTests",
+    "clean": "pridepack clean",
+    "watch": "pridepack watch"
+  },
+  "dependencies": {
+    "solid-js": "^1.3.7"
+  }
+}
