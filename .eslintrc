@@ -7,6 +7,7 @@
     "project": "./tsconfig.eslint.json"
   },
   "rules": {
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
   }
 }
