@@ -1,10 +1,10 @@
 {
   "name": "solid-livekit",
-  "version": "0.6.4",
+  "version": "0.0.0",
   "description": "Livekit SDK & Components for Solid",
   "types": "dist/types/index.d.ts",
-  "main": "dist/cjs/production/production/index.jsx",
-  "module": "dist/esm/production/production/index.jsx",
+  "main": "dist/cjs/index.jsx",
+  "module": "dist/esm/index.jsx",
   "files": [
     "dist",
     "src"
