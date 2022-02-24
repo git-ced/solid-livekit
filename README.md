@@ -2,23 +2,22 @@
   <img 
     width="100%" 
     src="./banner.png" 
-    alt="solid-links"
-    style="border-radius: 0 0 50px 0;"
+    alt="LiveKit Solid Component Library"
+    style="border-radius: 0 0 25px 10px;"
   >
 </p>
 
-Transform URLs in strings to actual links. It will find valid links in the given string and create `<a>` tags for it.
+This package provides Solid components that makes it easier to use LiveKit in a Solid app.
 
-Internally, it uses this **[Regex](https://regexr.com/6fkup)** to identify links.
-
-[![NPM](https://img.shields.io/npm/v/solid-links.svg)](https://www.npmjs.com/package/solid-links)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/solid-links)
-![npm bundle size (scoped version)](https://img.shields.io/bundlephobia/minzip/solid-links)
-![Libraries.io dependency status for latest release, scoped npm package](https://img.shields.io/librariesio/release/npm/solid-links)
-![NPM](https://img.shields.io/npm/l/solid-links)
+[![NPM](https://img.shields.io/npm/v/solid-livekit.svg)](https://www.npmjs.com/package/solid-livekit)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/solid-livekit)
+![npm bundle size (scoped version)](https://img.shields.io/bundlephobia/minzip/solid-livekit)
+![Libraries.io dependency status for latest release, scoped npm package](https://img.shields.io/librariesio/release/npm/solid-livekit)
+![NPM](https://img.shields.io/npm/l/solid-livekit)
 
 ## Table of Contents
  - [Installation](#installation)
+ - [Demo](#demo)
  - [Setup](#setup)
  - [Usage](#usage)
  - [Authors](#authors)
@@ -32,84 +31,115 @@ This library is available through the [npm registry](https://www.npmjs.com/).
 
 NPM
 ```bash
-$ npm -i solid-links
+$ npm -i solid-livekit
 ```
 
 Yarn
 ```bash
-$ yarn add solid-links
+$ yarn add solid-livekit
 ```
 
-## Setup
+## Demo
 
-Start using it by importing the library first.
+https://example.livekit.io.
 
-### CommonJS
-```javascript
-const Linkify = require('solid-links');
-```
-
-or 
-
-### ES6
-```javascript
-import Linkify from 'solid-links';
-```
+Source available in [example](example/)
 
 ## Usage
 
-```javascript
-import Linkify from 'solid-links';
+### Video room with built-in UI
 
-const TEST_STRING = `
-  Will match the following cases
+Without customization, the component would use a default skin as seen in the demo above.
 
-      http://www.foufos.gr
-      https://www.foufos.gr
-      http://foufos.gr
-      http://www.foufos.gr/kino
-      http://werer.gr
-      www.foufos.gr
-      www.mp3.com
-      www.t.co
-      http://t.co
-      http://www.t.co
-      https://www.t.co
-      www.aa.com
-      http://aa.com
-      http://www.aa.com
-      https://www.aa.com
+```tsx
+import { LiveKitRoom } from 'solid-livekit'
+// CSS should be explicitly imported if you want to use the default UI
+import 'solid-livekit/dist/index.css'
 
-  Will NOT match the following
-
-      www.foufos
-      www.foufos-.gr
-      www.-foufos.gr
-      foufos.gr
-      http://www.foufos
-      http://foufos
-      www.mp3#.com
-`;
-
-export default function Sample() {
+export const RoomPage = () => {
+  const url = 'wss://your_host'
+  const token = 'your_token'
   return (
-    <Linkify
-      text={TEST_STRING}
-      style="text-decoration: underline; color: blue;"
-    />
-  );
+    <div className="roomContainer">
+      <LiveKitRoom 
+        url={url}
+        token={token}
+        onConnected={room => onConnected(room)}
+      />
+    </div>
+  )
+}
+
+async function onConnected(room) {
+  await room.localParticipant.setCameraEnabled(true)
+  await room.localParticipant.setMicrophoneEnabled(true)
 }
 ```
+
+### Customize rendering
+
+To provide your own rendering, override one or more of `stageRenderer`, `participantRenderer`, and `controlRenderer`. It's possible customize a single renderer and use defaults for the others.
+
+```tsx
+export const RoomPage = () => {
+  const url = 'wss://your_host'
+  const token = 'your_token'
+  return (
+    <LiveKitRoom url={url} token={token}
+      // stageRenderer renders the entire stage
+      stageRenderer={(props: StageProps) => { return <div/> }}
+      // participantRenderer renders a single participant
+      participantRenderer={(props: ParticipantProps) => { return <div/> }}
+      // controlRenderer renders the control bar
+      controlRenderer={(props: ControlsProps) => { return <div/> }}
+    />
+  )
+}
+```
+
+### Using custom hooks
+
+The provided components make use of two hooks: `createRoom` and `createParticipant`, they will help you manage internal LiveKit callbacks and map them into state variables that are ready-to-use from React components.
+
+Using the `connect` function returned by createRoom will ensure that callbacks are registered automatically and the other state variables are updated when changes take place in the room.
+
+```tsx
+import { createRoom, createParticipant } from 'solid-livekit'
+
+export const MyComponent = () => {
+  const {
+    connect,
+    isConnecting,
+    room,
+    error,
+    participants,
+    audioTracks,
+  } = createRoom();
+  ...
+}
+
+export const ParticipantRenderer = ({ participant }) => {
+  const {
+    isSpeaking,
+    subscribedTracks,
+  } = createParticipant(participant)
+  ...
+}
+```
+
+### Rendering video and audio
+
+When building your custom UI, it's helpful to use track renderers that are provided in this library. `AudioRenderer` and `VideoRenderer` would render an audio and video track, respectively.
 
 ## Authors
 
 - [Prince Neil Cedrick Castro](https://github.com/git-ced/) - Initial work
 
-See also the list of [contributors](https://github.com/git-ced/solid-links/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/git-ced/solid-livekit/contributors) who participated in this project.
 
 ## Changelog
 
-[Changelog](https://github.com/git-ced/solid-links/releases)
+[Changelog](https://github.com/git-ced/solid-livekit/releases)
 
 ## License
 
