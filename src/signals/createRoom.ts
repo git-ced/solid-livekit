@@ -17,7 +17,7 @@ import {
 } from 'livekit-client';
 
 // ANCHOR Utils
-import { sortParticipants } from './sortParticipants';
+import { sortParticipants } from '../utils/sortParticipants';
 
 // ANCHOR Types
 export interface RoomState {
