@@ -162,5 +162,6 @@ export function createParticipant(
     microphonePublication: participant.getTrack(Track.Source.Microphone),
     screenSharePublication: participant.getTrack(Track.Source.ScreenShare),
     metadata: metadata(),
+    tracks: participant.tracks,
   });
 }

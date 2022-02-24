@@ -22,11 +22,6 @@ import { ParticipantProps } from './components/ParticipantView';
 import { StageProps } from './components/StageProps';
 import { StageView } from './components/StageView';
 
-// ANCHOR Types
-export type StageRenderer = (props: StageProps) => JSX.Element;
-export type ParticipantRenderer = (props: ParticipantProps) => JSX.Element;
-export type ControlsRenderer = (props: ControlsProps) => JSX.Element;
-
 export interface RoomProps {
   url: string;
   token: string;
@@ -37,9 +32,9 @@ export interface RoomProps {
   onConnected?: (room: Room) => void;
   // when user leaves the room
   onLeave?: (room: Room) => void;
-  stageRenderer?: StageRenderer;
-  participantRenderer?: ParticipantRenderer;
-  controlRenderer?: ControlsRenderer;
+  stageRenderer?: (props: StageProps) => JSX.Element;
+  participantRenderer?: (props: ParticipantProps) => JSX.Element;
+  controlRenderer?: (props: ControlsProps) => JSX.Element;
 }
 
 export const LiveKitRoom = (props: RoomProps): JSX.Element => {
