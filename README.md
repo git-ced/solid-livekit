@@ -54,7 +54,7 @@ Without customization, the component would use a default skin as seen in the dem
 ```tsx
 import { LiveKitRoom } from 'solid-livekit'
 // CSS should be explicitly imported if you want to use the default UI
-import 'solid-livekit/dist/index.css'
+import 'solid-livekit/dist/esm/index.css'
 
 export const RoomPage = () => {
   const url = 'wss://your_host'
