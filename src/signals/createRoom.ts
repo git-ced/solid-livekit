@@ -13,7 +13,6 @@ import {
   Participant,
   RemoteTrack,
   Room,
-  RoomEvent,
   Track,
 } from 'livekit-client';
 
@@ -86,32 +85,32 @@ export function createRoom(
         }
       };
 
-      newRoom.once(RoomEvent.Disconnected, () => {
+      newRoom.once('disconnected', () => {
         const timeoutId = setTimeout(() => setRoom(undefined));
 
         newRoom
-          .off(RoomEvent.ParticipantConnected, onParticipantsChanged)
-          .off(RoomEvent.ParticipantDisconnected, onParticipantsChanged)
-          .off(RoomEvent.ActiveSpeakersChanged, onParticipantsChanged)
-          .off(RoomEvent.TrackSubscribed, onSubscribedTrackChanged)
-          .off(RoomEvent.TrackUnsubscribed, onSubscribedTrackChanged)
-          .off(RoomEvent.LocalTrackPublished, onParticipantsChanged)
-          .off(RoomEvent.LocalTrackUnpublished, onParticipantsChanged)
-          .off(RoomEvent.AudioPlaybackStatusChanged, onParticipantsChanged);
+          .off('participantConnected', onParticipantsChanged)
+          .off('participantDisconnected', onParticipantsChanged)
+          .off('activeSpeakersChanged', onParticipantsChanged)
+          .off('trackSubscribed', onSubscribedTrackChanged)
+          .off('trackUnsubscribed', onSubscribedTrackChanged)
+          .off('localTrackPublished', onParticipantsChanged)
+          .off('localTrackUnpublished', onParticipantsChanged)
+          .off('audioPlaybackChanged', onParticipantsChanged);
 
         onCleanup(() => clearTimeout(timeoutId));
       });
 
       newRoom
-        .on(RoomEvent.ParticipantConnected, onParticipantsChanged)
-        .on(RoomEvent.ParticipantDisconnected, onParticipantsChanged)
-        .on(RoomEvent.ActiveSpeakersChanged, onParticipantsChanged)
-        .on(RoomEvent.TrackSubscribed, onSubscribedTrackChanged)
-        .on(RoomEvent.TrackUnsubscribed, onSubscribedTrackChanged)
-        .on(RoomEvent.LocalTrackPublished, onParticipantsChanged)
-        .on(RoomEvent.LocalTrackUnpublished, onParticipantsChanged)
+        .on('participantConnected', onParticipantsChanged)
+        .on('participantDisconnected', onParticipantsChanged)
+        .on('activeSpeakersChanged', onParticipantsChanged)
+        .on('trackSubscribed', onSubscribedTrackChanged)
+        .on('trackUnsubscribed', onSubscribedTrackChanged)
+        .on('localTrackPublished', onParticipantsChanged)
+        .on('localTrackUnpublished', onParticipantsChanged)
       // trigger a state change by re-sorting participants
-        .on(RoomEvent.AudioPlaybackStatusChanged, onParticipantsChanged);
+        .on('audioPlaybackChanged', onParticipantsChanged);
 
       setIsConnecting(false);
       onSubscribedTrackChanged();
