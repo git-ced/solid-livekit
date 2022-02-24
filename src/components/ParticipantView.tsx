@@ -132,14 +132,15 @@ export const ParticipantView = (props: ParticipantProps): JSX.Element => {
   });
 
   createEffect(() => {
-    const name = displayName();
+    setDisplayName((current) => {
+      if (!current) {
+        const suffix = participant().isLocal ? ' (You)' : '';
 
-    if (!name) {
-      const suffix = participant().isLocal ? ' (You)' : '';
-      const newName = `${props.participant.name || props.participant.identity}${suffix}`;
+        return `${props.participant.name || props.participant.identity}${suffix}`;
+      }
 
-      setDisplayName(newName);
-    }
+      return current;
+    });
   });
 
   const MainElement = (): JSX.Element => {
