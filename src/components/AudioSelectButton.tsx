@@ -79,7 +79,7 @@ export const AudioSelectButton = (
     }
   };
 
-  const AudioSelectIcon = () => (
+  const AudioSelectIcon = (): JSX.Element => (
     <Show
       when={props.isMuted}
       fallback={<FaSolidMicrophone className="icon" height={32} />}
@@ -90,7 +90,9 @@ export const AudioSelectButton = (
 
   return (
     <ControlButton
-      label={props.isMuted ? mergedProps.unmuteText : mergedProps.muteText}
+      label={props.isMuted
+        ? mergedProps.unmuteText
+        : mergedProps.muteText}
       icon={<AudioSelectIcon />}
       onClick={props.onClick}
       menuItems={menuItems()}
