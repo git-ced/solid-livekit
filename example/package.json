@@ -20,7 +20,7 @@
     "livekit-client": "^0.16.6",
     "rollup-plugin-visualizer": "^5.5.2",
     "solid-js": "^1.1.1",
-    "solid-livekit": "^0.1.0",
+    "solid-livekit": "^0.1.1",
     "solid-tiny-router": "^0.2.4",
     "vite": "^2.5.10",
     "vite-plugin-checker": "^0.3.4",
