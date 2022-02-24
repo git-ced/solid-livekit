@@ -2,6 +2,7 @@
 import {
   createSignal,
   Accessor,
+  onCleanup,
 } from 'solid-js';
 
 // ANCHOR LiveKit
@@ -84,7 +85,7 @@ export function createRoom(options?: RoomOptions): RoomState {
       };
 
       newRoom.once(RoomEvent.Disconnected, () => {
-        setTimeout(() => setRoom(undefined));
+        const timeoutId = setTimeout(() => setRoom(undefined));
 
         newRoom
           .off(RoomEvent.ParticipantConnected, onParticipantsChanged)
@@ -95,6 +96,8 @@ export function createRoom(options?: RoomOptions): RoomState {
           .off(RoomEvent.LocalTrackPublished, onParticipantsChanged)
           .off(RoomEvent.LocalTrackUnpublished, onParticipantsChanged)
           .off(RoomEvent.AudioPlaybackStatusChanged, onParticipantsChanged);
+
+        onCleanup(() => clearTimeout(timeoutId));
       });
 
       newRoom
