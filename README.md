@@ -3,7 +3,7 @@
     width="100%" 
     src="./banner.png" 
     alt="LiveKit Solid Component Library"
-    style="border-radius: 0 0 25px 10px;"
+    style="border-radius: 0 0 25px 0;"
   >
 </p>
 
@@ -41,7 +41,7 @@ $ yarn add solid-livekit
 
 ## Demo
 
-https://example.livekit.io.
+https://solid-livekit.netlify.app/
 
 Source available in [example](example/)
 
