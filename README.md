@@ -108,23 +108,20 @@ import { createRoom, createParticipant } from 'solid-livekit'
 
 export const MyComponent = () => {
   const room = createRoom();
-  const {
-    connect,
-    isConnecting,
-    room,
-    error,
-    participants,
-    audioTracks,
-  } = room();
+  // room().connect
+  // room().isConnecting
+  // room().room
+  // room().error
+  // room().participants
+  // room().audioTracks
   ...
 }
 
 export const ParticipantRenderer = ({ participant }) => {
   const participant = createParticipant(participant);
-  const {
-    isSpeaking,
-    subscribedTracks,
-  } = participant();
+  // participant().isSpeaking
+  // participant().subscribedTracks
+  // ...
   ...
 }
 ```
