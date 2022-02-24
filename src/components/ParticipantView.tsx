@@ -24,6 +24,9 @@ import {
   RemoteTrack,
 } from 'livekit-client';
 
+// ANCHOR Types
+import { Property } from 'csstype';
+
 // ANCHOR Components
 import { ConnectionQualityLow } from './ConnectionQualityLow';
 import { ConnectionQualityMid } from './ConnectionQualityMid';
@@ -41,9 +44,9 @@ export interface ParticipantProps {
   participant: Participant;
   displayName?: string;
   // width in CSS
-  width?: number | string;
+  width?: Property.Width;
   // height in CSS
-  height?: number | string;
+  height?: Property.Height;
   className?: string;
   // aspect ratio width, if set, maintains aspect ratio
   aspectWidth?: number;
@@ -68,7 +71,7 @@ export const ParticipantView = (props: ParticipantProps): JSX.Element => {
 
   const [videoSize, setVideoSize] = createSignal<string>();
   const [currentBitrate, setCurrentBitrate] = createSignal<number>();
-  const [objectFit, setObjectFit] = createSignal('contain');
+  const [objectFit, setObjectFit] = createSignal<Property.ObjectFit>('contain');
   const [videoOrientation, setVideoOrientation] = createSignal<'landscape' | 'portrait'>();
   const [displayName, setDisplayName] = createSignal(props.displayName);
 
@@ -153,7 +156,7 @@ export const ParticipantView = (props: ParticipantProps): JSX.Element => {
           <VideoRenderer
             track={track}
             isLocal={participant().isLocal}
-            objectFit={objectFit}
+            objectFit={objectFit()}
             width="100%"
             height="100%"
             onSizeChanged={handleResize}
