@@ -27,20 +27,22 @@ export interface RoomState {
     token: string,
     options?: ConnectOptions
   ) => Promise<Room | undefined>;
-  isConnecting: Accessor<boolean>;
-  room: Accessor<Room | undefined>;
+  isConnecting: boolean;
+  room?: Room;
   /* all participants in the room, including the local participant. */
-  participants: Accessor<Participant[]>;
+  participants: Participant[];
   /* all subscribed audio tracks in the room, not including local participant. */
-  audioTracks: Accessor<AudioTrack[]>;
-  error: Accessor<Error | undefined>;
+  audioTracks: AudioTrack[];
+  error?: Error;
 }
 
 export interface RoomOptions {
   sortParticipants?: (participants: Participant[]) => void;
 }
 
-export function createRoom(options?: RoomOptions): RoomState {
+export function createRoom(
+  options?: RoomOptions,
+): Accessor<RoomState> {
   const [room, setRoom] = createSignal<Room>();
   const [isConnecting, setIsConnecting] = createSignal(false);
   const [error, setError] = createSignal<Error>();
@@ -128,12 +130,12 @@ export function createRoom(options?: RoomOptions): RoomState {
     }
   };
 
-  return {
+  return () => ({
     connect: connectFunction,
-    isConnecting,
-    room,
-    error,
-    participants,
-    audioTracks,
-  };
+    isConnecting: isConnecting(),
+    room: room(),
+    error: error(),
+    participants: participants(),
+    audioTracks: audioTracks(),
+  });
 }

@@ -107,6 +107,7 @@ Using the `connect` function returned by createRoom will ensure that callbacks a
 import { createRoom, createParticipant } from 'solid-livekit'
 
 export const MyComponent = () => {
+  const room = createRoom();
   const {
     connect,
     isConnecting,
@@ -114,15 +115,16 @@ export const MyComponent = () => {
     error,
     participants,
     audioTracks,
-  } = createRoom();
+  } = room();
   ...
 }
 
 export const ParticipantRenderer = ({ participant }) => {
+  const participant = createParticipant(participant);
   const {
     isSpeaking,
     subscribedTracks,
-  } = createParticipant(participant)
+  } = participant();
   ...
 }
 ```

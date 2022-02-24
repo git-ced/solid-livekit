@@ -18,20 +18,22 @@ import {
 
 // ANCHOR Types
 export interface ParticipantState {
-  isSpeaking: Accessor<boolean>;
-  isAudioMuted: Accessor<boolean>;
-  isVideoMuted: Accessor<boolean>;
-  connectionQuality: Accessor<ConnectionQuality>;
+  isSpeaking: boolean;
+  isAudioMuted: boolean;
+  isVideoMuted: boolean;
+  connectionQuality: ConnectionQuality;
   isLocal: boolean;
-  metadata: Accessor<string | undefined>;
-  publications: Accessor<TrackPublication[]>;
-  subscribedTracks: Accessor<TrackPublication[]>;
+  metadata: string | undefined;
+  publications: TrackPublication[];
+  subscribedTracks: TrackPublication[];
   cameraPublication?: TrackPublication;
   microphonePublication?: TrackPublication;
   screenSharePublication?: TrackPublication;
 }
 
-export function createParticipant(participant: Participant): ParticipantState {
+export function createParticipant(
+  participant: Participant,
+): Accessor<ParticipantState> {
   const [isAudioMuted, setIsAudioMuted] = createSignal(false);
   const [isVideoMuted, setIsVideoMuted] = createSignal(false);
   const [connectionQuality, setConnectionQuality] = createSignal<ConnectionQuality>(
@@ -148,17 +150,17 @@ export function createParticipant(participant: Participant): ParticipantState {
     });
   });
 
-  return {
+  return () => ({
     isLocal: participant instanceof LocalParticipant,
-    isSpeaking,
-    isAudioMuted,
-    isVideoMuted,
-    connectionQuality,
-    publications,
-    subscribedTracks,
+    isSpeaking: isSpeaking(),
+    isAudioMuted: isAudioMuted(),
+    isVideoMuted: isVideoMuted(),
+    connectionQuality: connectionQuality(),
+    publications: publications(),
+    subscribedTracks: subscribedTracks(),
     cameraPublication: participant.getTrack(Track.Source.Camera),
     microphonePublication: participant.getTrack(Track.Source.Microphone),
     screenSharePublication: participant.getTrack(Track.Source.ScreenShare),
-    metadata,
-  };
+    metadata: metadata(),
+  });
 }
