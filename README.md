@@ -9,6 +9,8 @@
 
 This package provides Solid components that makes it easier to use LiveKit in a Solid app.
 
+Inspired completely by https://github.com/livekit/livekit-react
+
 [![NPM](https://img.shields.io/npm/v/solid-livekit.svg)](https://www.npmjs.com/package/solid-livekit)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/solid-livekit)
 ![npm bundle size (scoped version)](https://img.shields.io/bundlephobia/minzip/solid-livekit)
