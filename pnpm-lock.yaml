@@ -12,7 +12,7 @@ specifiers:
   eslint: ^7.32.0
   eslint-config-lxsmnsyc: ^0.2.3
   identity-obj-proxy: ^3.0.0
-  livekit-client: ^0.16.6
+  livekit-client: '>=0.16.6, <1.0.0'
   pridepack: ^0.12.2
   solid-aspect-ratio: ^0.2.1
   solid-headless: ^0.10.12
