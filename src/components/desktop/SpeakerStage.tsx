@@ -36,7 +36,7 @@ export const SpeakerStage = (
         const [screenTrack, setScreenTrack] = createSignal<VideoTrack>();
 
         createEffect(() => {
-          props.roomState.participants.forEach((participant) => {
+          props.roomState.participants().forEach((participant) => {
             setScreenTrack((current) => {
               if (!current) {
                 const track = participant.getTrack(Track.Source.ScreenShare);
@@ -57,7 +57,7 @@ export const SpeakerStage = (
           <Show
             when={screenTrack()}
             fallback={(
-              <Show when={props.roomState.participants[0]}>
+              <Show when={props.roomState.participants()[0]}>
                 {(participant) => (
                   <ParticipantRenderer
                     participant={participant}
@@ -91,7 +91,7 @@ export const SpeakerStage = (
                 <MainView />
               </div>
               <div className="sidebar">
-                <For each={otherParticipants}>
+                <For each={otherParticipants()}>
                   {(participant) => (
                     <ParticipantRenderer
                       participant={participant}
@@ -107,7 +107,7 @@ export const SpeakerStage = (
               </div>
             </div>
             <div className="controlsArea">
-              <Show when={props.roomState.room}>
+              <Show when={props.roomState.room()}>
                 {(room) => (
                   <ControlRenderer
                     room={room}
@@ -121,16 +121,22 @@ export const SpeakerStage = (
         );
       }}
     >
-      <Match when={props.roomState.error}>
-        {(error) => <div>error {error.message}</div>}
+      <Match when={props.roomState.error()}>
+        {(error) => (
+          <div>
+            error:
+            {' '}
+            {error?.message}
+          </div>
+        )}
       </Match>
-      <Match when={props.roomState.isConnecting}>
+      <Match when={props.roomState.isConnecting()}>
         {() => <div>connecting</div>}
       </Match>
-      <Match when={!props.roomState.room}>
+      <Match when={!props.roomState.room()}>
         {() => <div>room closed</div>}
       </Match>
-      <Match when={!props.roomState.participants.length}>
+      <Match when={!props.roomState.participants().length}>
         {() => <div>no one is in the room</div>}
       </Match>
     </Switch>

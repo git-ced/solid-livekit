@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // ANCHOR Solid
 import {
   createEffect,
@@ -41,12 +42,14 @@ export const LiveKitRoom = (props: RoomProps): JSX.Element => {
   const mergedProps = mergeProps({ connectOptions: {} }, props);
   const roomState = createRoom({ sortParticipants: props.sortParticipants });
 
-  createEffect(() => {
-    roomState().connect(
-      props.url,
-      props.token,
-      mergedProps.connectOptions,
-    ).then((room) => {
+  createEffect(async () => {
+    try {
+      const room = await roomState.connect(
+        props.url,
+        props.token,
+        mergedProps.connectOptions,
+      );
+
       if (!room) {
         return;
       }
@@ -58,15 +61,15 @@ export const LiveKitRoom = (props: RoomProps): JSX.Element => {
       onCleanup(() => {
         room.disconnect();
       });
-    })
-      // eslint-disable-next-line no-console
-      .catch(console.error);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   const selectedStageRenderer = props.stageRenderer ?? StageView;
 
   return selectedStageRenderer({
-    roomState: roomState(),
+    roomState,
     participantRenderer: props.participantRenderer,
     controlRenderer: props.controlRenderer,
     onLeave: props.onLeave,

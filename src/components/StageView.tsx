@@ -45,7 +45,7 @@ export const StageView = (
         const [screenTrack, setScreenTrack] = createSignal<VideoTrack>();
 
         createEffect(() => {
-          props.roomState.participants.forEach((participant) => {
+          props.roomState.participants().forEach((participant) => {
             setScreenTrack((current) => {
               if (!current) {
                 const track = participant.getTrack(Track.Source.ScreenShare);
@@ -76,18 +76,18 @@ export const StageView = (
   return (
     <div className="container">
       <MainElement />
-      <For each={props.roomState.audioTracks}>
+      <For each={props.roomState.audioTracks()}>
         {(track) => (
           <AudioRenderer track={track} isLocal={false} />
         )}
       </For>
 
-      <Show when={props.roomState.room?.canPlaybackAudio === false}>
+      <Show when={props.roomState.room()?.canPlaybackAudio === false}>
         <div className="overlay">
           <button
             className="unmuteButton"
             onClick={() => {
-              props.roomState.room?.startAudio()
+              props.roomState.room()?.startAudio()
                 // eslint-disable-next-line no-console
                 .catch(console.error);
             }}

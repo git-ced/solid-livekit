@@ -50,7 +50,7 @@ export const GridStage = (
       setGridClass('grid4x4');
       numVisible = Math.min(participantCount, 16);
     } else {
-      setGridClass('grid4x4');
+      setGridClass('grid5x5');
       numVisible = Math.min(participantCount, 25);
     }
 
@@ -58,7 +58,7 @@ export const GridStage = (
       // remove any participants that are no longer connected
       const newParticipants: Participant[] = [];
 
-      const currentRoom = props.roomState.room;
+      const currentRoom = props.roomState.room();
 
       current.forEach((p) => {
         if (currentRoom?.participants.has(p.sid)
@@ -89,7 +89,7 @@ export const GridStage = (
       });
 
       // add other non speakers
-      props.roomState.participants.forEach((participant) => {
+      props.roomState.participants().forEach((participant) => {
         const isFull = newParticipants.length >= numVisible;
         const isVisible = newParticipants.includes(participant) || participant.isSpeaking;
 
@@ -132,7 +132,7 @@ export const GridStage = (
               </For>
             </div>
             <div className="controlsArea">
-              <Show when={props.roomState.room}>
+              <Show when={props.roomState.room()}>
                 {(room) => (
                   <ControlRenderer room={room} onLeave={props.onLeave} />
                 )}
@@ -142,16 +142,22 @@ export const GridStage = (
         );
       }}
     >
-      <Match when={props.roomState.error}>
-        {(error) => <div>error {error.message}</div>}
+      <Match when={props.roomState.error()}>
+        {(error) => (
+          <div>
+            error:
+            {' '}
+            {error?.message}
+          </div>
+        )}
       </Match>
-      <Match when={props.roomState.isConnecting}>
+      <Match when={props.roomState.isConnecting()}>
         {() => <div>connecting</div>}
       </Match>
-      <Match when={!props.roomState.room}>
+      <Match when={!props.roomState.room()}>
         {() => <div>room closed</div>}
       </Match>
-      <Match when={!props.roomState.participants.length}>
+      <Match when={!props.roomState.participants().length}>
         {() => <div>no one is in the room</div>}
       </Match>
     </Switch>
